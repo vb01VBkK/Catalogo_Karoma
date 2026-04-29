@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Coffee, Menu, X, ArrowUpRight, Search, ChevronRight } from 'lucide-react';
+import { Coffee, Menu, X, ArrowUpRight, Search, FileDown, Loader2 } from 'lucide-react';
 import { CATALOG, Category, Product } from './constants';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const Logo = () => (
   <div className="flex items-center gap-2">
@@ -9,6 +11,7 @@ const Logo = () => (
       src="https://www.caffekaroma.it/wp-content/uploads/2025/02/logo-black-1.png" 
       alt="Karoma Logo" 
       className="h-10 md:h-12 w-auto object-contain"
+      crossOrigin="anonymous"
       referrerPolicy="no-referrer"
     />
   </div>
@@ -47,25 +50,24 @@ const PalletIcon = () => (
   </svg>
 );
 
-const ProductCard = ({ product, index }: { product: Product; index: number; key?: string | number }) => {
+const ProductCard = ({ product, index, isPdf = false }: { product: Product; index: number; isPdf?: boolean }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.05 }}
-      className="group relative bg-white brutal-border p-6 hover:border-brand-red transition-all hover:shadow-[8px_8px_0px_0px_rgba(208,0,0,0.1)] overflow-hidden"
+    <div
+      className={`relative bg-white brutal-border p-6 overflow-hidden ${isPdf ? 'w-full mb-8' : 'group hover:border-brand-red transition-all hover:shadow-[8px_8px_0px_0px_rgba(208,0,0,0.1)]'}`}
     >
-      <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-        <ArrowUpRight className="text-brand-red w-5 h-5" />
-      </div>
+      {!isPdf && (
+        <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+          <ArrowUpRight className="text-brand-red w-5 h-5" />
+        </div>
+      )}
       
       <div className="flex flex-col h-full">
-        <div className="relative w-full aspect-square mb-6 overflow-hidden bg-brand-gray brutal-border flex items-center justify-center">
+        <div className={`relative w-full aspect-square mb-6 overflow-hidden bg-brand-gray brutal-border flex items-center justify-center ${isPdf ? 'h-48' : ''}`}>
           <img 
             src={product.image} 
             alt={product.name} 
-            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500 scale-100 group-hover:scale-110"
+            className={`w-full h-full object-cover grayscale transition-all duration-500 ${!isPdf ? 'hover:grayscale-0 scale-100 group-hover:scale-110' : ''}`}
+            crossOrigin="anonymous"
             onError={(e) => {
               (e.target as HTMLImageElement).style.display = 'none';
               (e.target as HTMLImageElement).parentElement?.classList.add('bg-brand-gray');
@@ -76,18 +78,18 @@ const ProductCard = ({ product, index }: { product: Product; index: number; key?
           />
         </div>
 
-        <h3 className="font-display font-bold text-xl uppercase mb-4 leading-tight group-hover:text-brand-red transition-colors">
+        <h3 className={`font-display font-bold uppercase leading-tight ${isPdf ? 'text-lg mb-2' : 'text-xl mb-4 group-hover:text-brand-red transition-colors'}`}>
           {product.name}
         </h3>
         
         {product.variants && (
-          <div className="flex flex-wrap gap-2 mb-8">
+          <div className="flex flex-wrap gap-2 mb-6">
             {product.variants.map((variant) => {
               const dotColor = getVariantColor(variant);
               return (
                 <span 
                   key={variant} 
-                  className="inline-flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-wider px-2 py-1 bg-brand-gray border border-transparent group-hover:bg-brand-red/10 group-hover:text-brand-red transition-all"
+                  className={`inline-flex items-center gap-1.5 text-[9px] uppercase font-bold tracking-wider px-2 py-1 bg-brand-gray border border-transparent ${!isPdf ? 'group-hover:bg-brand-red/10 group-hover:text-brand-red transition-all' : ''}`}
                 >
                   {dotColor && <span className={`w-2 h-2 rounded-full ${dotColor} shrink-0 shadow-sm`} />}
                   {variant}
@@ -98,16 +100,16 @@ const ProductCard = ({ product, index }: { product: Product; index: number; key?
         )}
 
         {product.specs && (
-          <div className="mt-auto pt-6 border-t border-brand-dark/10">
+          <div className={`mt-auto pt-4 border-t border-brand-dark/10 ${isPdf ? 'mb-0' : ''}`}>
             <div className="grid grid-cols-2 gap-4">
               {product.specs.map((spec) => (
                 <div key={spec.label} className="flex flex-col items-center text-center">
-                  <div className="text-brand-dark group-hover:text-brand-red transition-colors">
+                  <div className={`text-brand-dark ${!isPdf ? 'group-hover:text-brand-red' : ''} transition-colors scale-75`}>
                     {spec.label.toLowerCase().includes('box') ? <BoxIcon /> : <PalletIcon />}
                   </div>
                   <div>
-                    <p className="text-[9px] uppercase font-bold text-brand-dark/40 mb-0.5 tracking-widest">{spec.label}</p>
-                    <p className="text-xs font-display font-bold uppercase">{spec.value}</p>
+                    <span className="text-[8px] uppercase font-bold text-brand-dark/40 block leading-none">{spec.label}</span>
+                    <span className="text-[10px] font-display font-bold uppercase">{spec.value}</span>
                   </div>
                 </div>
               ))}
@@ -115,14 +117,16 @@ const ProductCard = ({ product, index }: { product: Product; index: number; key?
           </div>
         )}
 
-        <div className="mt-8">
-          <button className="w-full py-3 bg-brand-red text-white text-[10px] font-display font-bold uppercase tracking-widest hover:bg-brand-dark transition-colors flex items-center justify-center group/btn">
-            Scopri il prezzo
-            <ArrowUpRight className="ml-2 w-3 h-3 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
-          </button>
-        </div>
+        {!isPdf && (
+           <div className="mt-8">
+            <button className="w-full py-3 bg-brand-red text-white text-[10px] font-display font-bold uppercase tracking-widest hover:bg-brand-dark transition-colors flex items-center justify-center group/btn">
+              Scopri il prezzo
+              <ArrowUpRight className="ml-2 w-3 h-3 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+            </button>
+          </div>
+        )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -130,6 +134,8 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState(CATALOG[0].id);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  const pdfRef = useRef<HTMLDivElement>(null);
 
   // Update active category on scroll
   useEffect(() => {
@@ -149,6 +155,47 @@ export default function App() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleDownloadPdf = async () => {
+    if (!pdfRef.current || isGeneratingPdf) return;
+
+    try {
+      setIsGeneratingPdf(true);
+      
+      // Ensure images are loaded (simple delay or verification)
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const container = pdfRef.current;
+      const categories = container.querySelectorAll('.pdf-category');
+
+      for (let i = 0; i < categories.length; i++) {
+        const category = categories[i] as HTMLElement;
+        const canvas = await html2canvas(category, {
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          backgroundColor: '#ffffff'
+        });
+
+        const imgData = canvas.toDataURL('image/png');
+        const imgWidth = 210; // A4 width in mm
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        if (i > 0) pdf.addPage();
+        
+        // If the category content is taller than A4, we'll need to split it
+        // But for simplicity in this catalog, we assume each category fits or we split broadly
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+      }
+
+      pdf.save('Catalogo_Karoma_2026.pdf');
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
 
   const filteredCatalog = CATALOG.map(category => ({
     ...category,
@@ -215,10 +262,23 @@ export default function App() {
               nostro catalogo digitale 2026.
             </p>
             <div className="flex flex-col items-start md:items-end">
-              <a href="#cialde" className="btn-primary flex items-center group">
-                Sfoglia Listino 
-                <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </a>
+              <button 
+                onClick={handleDownloadPdf}
+                disabled={isGeneratingPdf}
+                className="btn-primary flex items-center group disabled:opacity-50"
+              >
+                {isGeneratingPdf ? (
+                  <>
+                    <Loader2 className="mr-2 w-5 h-5 animate-spin" />
+                    Generazione PDF...
+                  </>
+                ) : (
+                  <>
+                    Scarica il PDF aggiornato
+                    <FileDown className="ml-2 w-5 h-5 group-hover:translate-y-0.5 transition-transform" />
+                  </>
+                )}
+              </button>
             </div>
           </div>
         </div>
@@ -326,6 +386,44 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* Hidden PDF Container */}
+      <div className="fixed left-[-9999px] top-0 overflow-hidden" style={{ width: '800px' }}>
+        <div ref={pdfRef} className="bg-white text-brand-dark p-8">
+          {CATALOG.map((category) => (
+            <div key={`pdf-${category.id}`} className="pdf-category bg-white p-10 min-h-[1100px] border-b-2 border-brand-dark/5">
+              <div className="flex justify-between items-start mb-20 border-b-8 border-brand-red pb-8">
+                <div>
+                  <h2 className="text-6xl font-display font-bold uppercase tracking-tighter mb-4 text-brand-dark">
+                    {category.title}
+                  </h2>
+                  <p className="text-brand-dark/60 font-medium italic text-xl">{category.subtitle}</p>
+                </div>
+                <div className="text-right">
+                  <Logo />
+                  <p className="mt-4 text-[10px] font-bold uppercase tracking-widest text-brand-dark/30">Listino Ufficiali 2026</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-12">
+                {category.products.map((product, idx) => (
+                  <ProductCard 
+                    key={`pdf-prod-${category.id}-${idx}`} 
+                    product={product} 
+                    index={idx} 
+                    isPdf={true} 
+                  />
+                ))}
+              </div>
+              
+              <div className="mt-auto pt-20 flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-brand-dark/20 italic">
+                <span>Passione, Tradizione, Innovazione</span>
+                <span>Pagina {CATALOG.indexOf(category) + 1}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
