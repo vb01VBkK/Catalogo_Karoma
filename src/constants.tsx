@@ -23,19 +23,19 @@ export const CATALOG: Category[] = [
         name: "BOX 150 ESE 44",
         variants: ["Intenso", "Classico", "Soave"],
         specs: [{ label: "Box", value: "150 PZ" }, { label: "Pallet", value: "144 BOX" }],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       },
       {
         name: "BOX 100 ESE 44",
         variants: ["Intenso", "Classico", "Soave", "DEK"],
         specs: [{ label: "Box", value: "100 PZ" }, { label: "Pallet", value: "192 BOX" }],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       },
       {
         name: "BOX 50 ESE 44",
         variants: ["Intenso", "Classico", "Soave", "DEK"],
         specs: [{ label: "Box", value: "50 PZ" }, { label: "Pallet", value: "364 BOX" }],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       }
     ]
   },
@@ -48,19 +48,19 @@ export const CATALOG: Category[] = [
         name: "MONORIGINI (6 CUBI DA 10)",
         variants: ["Brasile", "Ethiopia", "Guatemala"],
         specs: [{ label: "Box", value: "60 PZ" }, { label: "Pallet", value: "144 BOX" }],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       },
       {
         name: "AROMATIZZATI (6 CUBI DA 10)",
         variants: ["Caffè alla nocciola", "Caffè al ginseng", "Caffè al cioccolato", "Caffè irish"],
         specs: [{ label: "Box", value: "60 PZ" }, { label: "Pallet", value: "144 BOX" }],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       },
       {
         name: "TISANE & SOLUBILI (6 CUBI DA 10)",
         variants: ["Orzo", "Tè al limone", "Frutti rossi", "Ventre piatto"],
         specs: [{ label: "Box", value: "60 PZ" }, { label: "Pallet", value: "144 BOX" }],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       }
     ]
   },
@@ -73,13 +73,13 @@ export const CATALOG: Category[] = [
         name: "BOX 100",
         variants: ["Intenso", "Classico", "Soave", "DEK"],
         specs: [{ label: "Box", value: "100 PZ" }, { label: "Pallet", value: "128 BOX" }],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       },
       {
         name: "BOX 50",
         variants: ["Intenso", "Classico", "Soave", "DEK"],
         specs: [{ label: "Box", value: "50 PZ" }, { label: "Pallet", value: "234 BOX" }],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       }
     ]
   },
@@ -92,19 +92,19 @@ export const CATALOG: Category[] = [
         name: "BOX 100 (10x10)",
         variants: ["Extra Strong", "Classico", "Soave", "DEK"],
         specs: [{ label: "Box", value: "100 PZ" }, { label: "Pallet", value: "128 BOX" }],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       },
       {
         name: "ASTUCCIO 10",
         variants: ["Classico", "Soave", "DEK"],
         specs: [{ label: "Masterbox", value: "da 30 Astucci" }, { label: "Pallet", value: "128 Masterbox" }],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       },
       {
         name: "SOLUBILI",
         variants: ["Ginseng", "Nocciolino"],
         specs: [{ label: "Masterbox", value: "10" }],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       }
     ]
   },
@@ -117,7 +117,7 @@ export const CATALOG: Category[] = [
         name: "BOX 96 (6x16)",
         variants: ["Classico", "Soave", "DEK"],
         specs: [{ label: "Box", value: "96 PZ" }, { label: "Pallet", value: "128 BOX" }],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       },
       {
         name: "SOLUBILI (6x16)",
@@ -128,7 +128,7 @@ export const CATALOG: Category[] = [
           "Camomilla arancia e miele", "Tè zenzero e limone"
         ],
         specs: [{ label: "Box", value: "96 PZ" }, { label: "Pallet", value: "144 BOX" }],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       },
       {
         name: "PREMIUM SOLUBILI",
@@ -136,7 +136,7 @@ export const CATALOG: Category[] = [
           "Chocowhite", "Macaron al pistacchio", "Ginseng amaro",
           "Cioccolato fondente", "Creme brulèe", "Ginseng rosso"
         ],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       }
     ]
   },
@@ -149,13 +149,13 @@ export const CATALOG: Category[] = [
         name: "CAFFITALY BOX 150 (6x25)",
         variants: ["Classico", "Soave", "DEK"],
         specs: [{ label: "Box", value: "150 PZ" }, { label: "Pallet", value: "128 BOX" }],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       },
       {
         name: "BIALETTI BOX 100",
         variants: ["Classico"],
         specs: [{ label: "Box", value: "100 PZ" }, { label: "Pallet", value: "128 BOX" }],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       }
     ]
   },
@@ -167,17 +167,17 @@ export const CATALOG: Category[] = [
       {
         name: "250g BARATTOLO",
         variants: ["Espresso Napoletano"],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       },
       {
         name: "250g BUSTA",
         variants: ["Espresso Napoletano"],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       },
       {
         name: "KIT ACCESSORI",
         variants: ["KIT ECO"],
-        image: "https://lh3.googleusercontent.com/d/1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw=w1000"
+        image: "https://images.weserv.nl/?url=drive.google.com/uc?id=1Mx8fxYdY56RIGaovsCEDmNAuXyRJRVdw"
       }
     ]
   }

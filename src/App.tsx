@@ -2,8 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Coffee, Menu, X, ArrowUpRight, Search, FileDown, Loader2 } from 'lucide-react';
 import { CATALOG, Category, Product } from './constants';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import html2pdf from 'html2pdf.js';
 
 const Logo = () => (
   <div className="flex items-center gap-2">
@@ -161,37 +160,28 @@ export default function App() {
 
     try {
       setIsGeneratingPdf(true);
+      console.log('Generating PDF...');
       
-      // Ensure images are loaded (simple delay or verification)
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const container = pdfRef.current;
-      const categories = container.querySelectorAll('.pdf-category');
-
-      for (let i = 0; i < categories.length; i++) {
-        const category = categories[i] as HTMLElement;
-        const canvas = await html2canvas(category, {
-          scale: 2,
+      const element = pdfRef.current;
+      const opt = {
+        margin: 0,
+        filename: 'Catalogo_Karoma_2026.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 2, 
           useCORS: true,
-          logging: false,
-          backgroundColor: '#ffffff'
-        });
+          letterRendering: true,
+          logging: true 
+        },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      };
 
-        const imgData = canvas.toDataURL('image/png');
-        const imgWidth = 210; // A4 width in mm
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-        if (i > 0) pdf.addPage();
-        
-        // If the category content is taller than A4, we'll need to split it
-        // But for simplicity in this catalog, we assume each category fits or we split broadly
-        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-      }
-
-      pdf.save('Catalogo_Karoma_2026.pdf');
+      await html2pdf().set(opt).from(element).save();
+      console.log('PDF Generated successfully');
     } catch (error) {
       console.error('Error generating PDF:', error);
+      alert('Si è verificato un errore durante la generazione del PDF. Riprova tra un momento.');
     } finally {
       setIsGeneratingPdf(false);
     }
@@ -388,24 +378,31 @@ export default function App() {
       </footer>
 
       {/* Hidden PDF Container */}
-      <div className="fixed left-[-9999px] top-0 overflow-hidden" style={{ width: '800px' }}>
-        <div ref={pdfRef} className="bg-white text-brand-dark p-8">
+      <div className="fixed opacity-0 pointer-events-none overflow-hidden" style={{ top: '-10000px', width: '210mm' }}>
+        <div ref={pdfRef} className="bg-white text-brand-dark">
           {CATALOG.map((category) => (
-            <div key={`pdf-${category.id}`} className="pdf-category bg-white p-10 min-h-[1100px] border-b-2 border-brand-dark/5">
-              <div className="flex justify-between items-start mb-20 border-b-8 border-brand-red pb-8">
+            <div key={`pdf-${category.id}`} className="pdf-category bg-white p-12 min-h-[297mm] flex flex-col page-break" style={{ pageBreakAfter: 'always' }}>
+              <div className="flex justify-between items-start mb-12 border-b-4 border-brand-red pb-4">
                 <div>
-                  <h2 className="text-6xl font-display font-bold uppercase tracking-tighter mb-4 text-brand-dark">
+                  <h2 className="text-4xl font-display font-bold uppercase tracking-tighter mb-2 text-brand-dark">
                     {category.title}
                   </h2>
-                  <p className="text-brand-dark/60 font-medium italic text-xl">{category.subtitle}</p>
+                  <p className="text-brand-dark/60 font-medium italic text-sm">{category.subtitle}</p>
                 </div>
-                <div className="text-right">
-                  <Logo />
-                  <p className="mt-4 text-[10px] font-bold uppercase tracking-widest text-brand-dark/30">Listino Ufficiali 2026</p>
+                <div className="text-right flex flex-col items-end">
+                  <div className="brightness-0">
+                    <img 
+                      src="https://images.weserv.nl/?url=www.caffekaroma.it/wp-content/uploads/2025/02/logo-black-1.png" 
+                      alt="Karoma Logo" 
+                      className="h-8 w-auto object-contain"
+                      crossOrigin="anonymous"
+                    />
+                  </div>
+                  <p className="mt-2 text-[8px] font-bold uppercase tracking-widest text-brand-dark/30">Listino Ufficiali 2026</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-12">
+              <div className="grid grid-cols-2 gap-8">
                 {category.products.map((product, idx) => (
                   <ProductCard 
                     key={`pdf-prod-${category.id}-${idx}`} 
@@ -416,8 +413,9 @@ export default function App() {
                 ))}
               </div>
               
-              <div className="mt-auto pt-20 flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-brand-dark/20 italic">
+              <div className="mt-auto pt-8 flex justify-between items-center text-[8px] font-bold uppercase tracking-widest text-brand-dark/20 italic">
                 <span>Passione, Tradizione, Innovazione</span>
+                <span>www.caffekaroma.it</span>
                 <span>Pagina {CATALOG.indexOf(category) + 1}</span>
               </div>
             </div>
