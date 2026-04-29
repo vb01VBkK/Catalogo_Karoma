@@ -61,12 +61,18 @@ const ProductCard = ({ product, index }: { product: Product; index: number; key?
       </div>
       
       <div className="flex flex-col h-full">
-        <div className="relative w-full aspect-square mb-6 overflow-hidden bg-brand-gray brutal-border">
+        <div className="relative w-full aspect-square mb-6 overflow-hidden bg-brand-gray brutal-border flex items-center justify-center">
           <img 
             src={product.image} 
             alt={product.name} 
             className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500 scale-100 group-hover:scale-110"
-            referrerPolicy="no-referrer"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = 'none';
+              (e.target as HTMLImageElement).parentElement?.classList.add('bg-brand-gray');
+              const icon = document.createElement('div');
+              icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-brand-dark/10"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>';
+              (e.target as HTMLImageElement).parentElement?.appendChild(icon.firstChild as Node);
+            }}
           />
         </div>
 
@@ -108,6 +114,13 @@ const ProductCard = ({ product, index }: { product: Product; index: number; key?
             </div>
           </div>
         )}
+
+        <div className="mt-8">
+          <button className="w-full py-3 bg-brand-red text-white text-[10px] font-display font-bold uppercase tracking-widest hover:bg-brand-dark transition-colors flex items-center justify-center group/btn">
+            Scopri il prezzo
+            <ArrowUpRight className="ml-2 w-3 h-3 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+          </button>
+        </div>
       </div>
     </motion.div>
   );
@@ -188,17 +201,18 @@ export default function App() {
           <motion.h1 
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-[12vw] md:text-[8vw] font-display font-bold leading-[0.8] uppercase mb-12"
+            className="text-[11vw] md:text-[7vw] font-display font-bold leading-[0.85] uppercase mb-12"
           >
             Passione <br />
-            <span className="text-stroke-red opacity-80">Napoletana</span>
+            <span className="text-stroke-red">Tradizione</span> <br />
+            Innovazione
           </motion.h1>
 
           <div className="grid md:grid-cols-2 gap-12 items-end">
             <p className="text-xl md:text-2xl font-light text-white/60 max-w-lg leading-relaxed">
               Il vero aroma del caffè, <br />
               senza compromessi. Esplora il <br />
-              nostro catalogo digitale 2024.
+              nostro catalogo digitale 2026.
             </p>
             <div className="flex flex-col items-start md:items-end">
               <a href="#cialde" className="btn-primary flex items-center group">
